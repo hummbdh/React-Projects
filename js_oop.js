@@ -96,3 +96,45 @@ Student.prototype.status = function() {
 
 var elie = new Person('Elie', 'Schoppik');
 elie.status(); // "I am currently a student!"
+
+/* In general, we cannot assign one object to another
+it will just create a reference.  If we change
+Student.prototype, it will affect the Parent.prototype.
+We still want all of the methods and prorperties from
+the Parent.prototype, but we want two totally separate
+objects - not a reference! In this case we can use
+'Object.create', which creates a brand new function and
+accepts as its first parameter, what the prototype 
+object should be for the newly created object */
+function Student(firstName, lastName) {
+    return Person.apply(this, arguments);
+}
+
+Student.prototype = Object.create(Person.prototype);
+
+Student.prototype.status = function() {
+    return "I am currently a student!"
+}
+
+var elie = new Person('Elie', 'Schoppik');
+
+elie.status; // undefined, Student.prototype does
+             // not effect Parent.prototype anymore
+
+/* Why not use 'new' instead of 'Object.create'.
+'new' will do almost the same thing, but add additional
+unnecessary properties on the prototype object (since it
+is creating an object with undefined properties just for 
+the prototype) */ 
+function Student(firstName, lastName) {
+    return Person.apply(this, arguments);
+}
+
+Student.prototype = new Person;
+
+/* Last porition of Prototype Inheritance - Recall,
+every prototype object has a property on it called
+constructor, which points back to the constructor
+function */
+Student.prototype.constructor;  // Person (Person constructor, need to reset this)
+Student.prototype.constructor = Student;

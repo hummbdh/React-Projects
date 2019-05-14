@@ -6,7 +6,7 @@ function outer() {
     var start = "Closures are";
     
     // here the function inner is 
-    // using 'clouser' to pass values
+    // using 'closure' to pass values
     return function inner() {
         return start + " " + "awesome";
     };
@@ -190,10 +190,32 @@ divsArray.filter(function(val){
 
 // LECTURE Apply
 
-/* Pretty much the same as call(), but can
-pass additional parameters through an array.
-This is useful when a function does not accept
-an array as a parameter, such as Math.max*/
+/* Additionally, this is useful when 
+a function does not accept an array as a 
+parameter, apply will spread out values 
+in an array for us, such as Math.max*/
+
+/* Example */
+function addNumbers(a,b,c,d) {
+    return this.firstName + " just calculated " + (a+b+c+d);
+}
+
+var colt = {
+    firstName: "Colt"
+}
+
+var elie = {
+    firstName: "Elie"
+}
+
+addNumbers.call(elie,1,2,3,4); // Elie just calculated 10
+addNumbers.call(elie,[1,2,3,4]); // Elie just calculated 10
+
+/* Example using Math.max */
+
+var nums = [5,7,1,4,2];
+Math.max(nums) // NaN
+Math.max.apply(this, nums); // 7
 
 // LECTURE Bind
 /* Bind is useful when we do not know all
@@ -221,9 +243,11 @@ elieCalc(); // Elie just calculated 10
 var elieCalc = addNumbers.bind(elie,1,2);
 elieCalc(3,4); // Elie just calculated 10
 
-/* LECTURE Bind Continued
+// LECTURE Bind Continued
+
+/* 
 Very commonly we lose the context of 'this',
-but in functions that we do not wat to
+but in functions that we do not want to
 execute right away.  In this lecture we will
 look at using bind and setTimeout() to solve
 some tricky problems.  THe main reason we
